@@ -3,6 +3,13 @@
 # dependencies
 node_modules/
 
+# prebuild output
+ios/
+android/
+
+# Claude Code setting
+.claude/
+
 # Expo
 .expo/
 dist/

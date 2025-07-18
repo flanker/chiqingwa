@@ -1,75 +1,102 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GoalManager } from '@/components/GoalManager';
+import { StorageDebug } from '@/components/StorageDebug';
+import { FeatureDemo } from '@/components/FeatureDemo';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
-export default function HomeScreen() {
+export default function TodayScreen() {
+  const [showDebug, setShowDebug] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
+
+  const tintColor = useThemeColor({}, 'tint');
+  const iconColor = useThemeColor({}, 'icon');
+
+  if (showDebug) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <TouchableOpacity 
+          style={[styles.toggleButton, { backgroundColor: tintColor }]} 
+          onPress={() => setShowDebug(false)}
+        >
+          <ThemedText style={[styles.toggleText, { color: tintColor === '#0a7ea4' ? '#fff' : '#000' }]}>返回目标管理</ThemedText>
+        </TouchableOpacity>
+        <StorageDebug />
+      </SafeAreaView>
+    );
+  }
+
+  if (showDemo) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <TouchableOpacity 
+          style={[styles.toggleButton, { backgroundColor: tintColor }]} 
+          onPress={() => setShowDemo(false)}
+        >
+          <ThemedText style={[styles.toggleText, { color: tintColor === '#0a7ea4' ? '#fff' : '#000' }]}>返回目标管理</ThemedText>
+        </TouchableOpacity>
+        <FeatureDemo />
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={[styles.helpButton, { backgroundColor: iconColor + '20' }]} 
+          onPress={() => setShowDemo(true)}
+        >
+          <ThemedText style={styles.buttonText}>❓</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.debugButton, { backgroundColor: iconColor + '15' }]} 
+          onPress={() => setShowDebug(true)}
+        >
+          <ThemedText style={styles.buttonText}>🔧</ThemedText>
+        </TouchableOpacity>
+      </View>
+      <GoalManager
+        type="today"
+        title="今日目标"
+        emptyMessage="今天还没有设定目标，快来添加一个吧！专注完成今天最重要的事情。"
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  buttonContainer: {
     position: 'absolute',
+    top: 10,
+    right: 20,
+    zIndex: 1000,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  helpButton: {
+    padding: 8,
+    borderRadius: 20,
+  },
+  debugButton: {
+    padding: 8,
+    borderRadius: 20,
+  },
+  buttonText: {
+    fontSize: 16,
+  },
+  toggleButton: {
+    padding: 12,
+    margin: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  toggleText: {
+    fontWeight: '600',
   },
 });

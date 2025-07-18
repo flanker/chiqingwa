@@ -3,16 +3,17 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { TodayIcon, WeekIcon, MonthIcon, YearIcon } from '@/components/icons/GoalIcons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
     <Tabs
+      initialRouteName="index"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
@@ -29,15 +30,29 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '今日',
+          tabBarIcon: ({ color }) => <TodayIcon size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="week"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '本周',
+          tabBarIcon: ({ color }) => <WeekIcon size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="month"
+        options={{
+          title: '本月',
+          tabBarIcon: ({ color }) => <MonthIcon size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="year"
+        options={{
+          title: '今年',
+          tabBarIcon: ({ color }) => <YearIcon size={28} color={color} />,
         }}
       />
     </Tabs>
