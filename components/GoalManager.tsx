@@ -5,7 +5,6 @@ import { ThemedView } from '@/components/ThemedView';
 import { Goal, GoalType } from '@/types/Goal';
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GoalStorage } from '@/utils/storage';
 
 interface GoalManagerProps {
