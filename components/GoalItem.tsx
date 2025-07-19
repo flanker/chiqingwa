@@ -1,7 +1,7 @@
-import { Goal } from '@/types/Goal';
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Card, Checkbox, Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
+import { Goal } from "@/types/Goal";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Button, Card, Dialog, IconButton, Portal, Text, TextInput } from "react-native-paper";
 
 interface GoalItemProps {
   goal: Goal;
@@ -76,33 +76,23 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
       <Card style={styles.container}>
         <Card.Content>
           <View style={styles.content}>
-            <Checkbox
-              status={goal.completed ? 'checked' : 'unchecked'}
+            <IconButton
+              icon={goal.completed ? "checkbox-marked" : "checkbox-blank-outline"}
+              size={24}
               onPress={toggleCompleted}
+              iconColor={goal.completed ? "#4caf50" : "#666"}
             />
             <View style={styles.textContainer}>
               <Text
                 variant="titleMedium"
-                style={[
-                  styles.title,
-                  goal.completed && { textDecorationLine: 'line-through', opacity: 0.6 }
-                ]}
+                style={[styles.title, goal.completed && { textDecorationLine: "line-through", opacity: 0.6 }]}
               >
                 {goal.title}
               </Text>
             </View>
             <View style={styles.actions}>
-              <IconButton
-                icon="pencil"
-                size={20}
-                onPress={() => setIsEditing(true)}
-              />
-              <IconButton
-                icon="delete"
-                size={20}
-                iconColor="#f44336"
-                onPress={handleDelete}
-              />
+              <IconButton icon="pencil" size={20} onPress={() => setIsEditing(true)} />
+              <IconButton icon="delete" size={20} iconColor="#f44336" onPress={handleDelete} />
             </View>
           </View>
         </Card.Content>
@@ -112,9 +102,7 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
         <Dialog visible={showDeleteConfirm} onDismiss={() => setShowDeleteConfirm(false)}>
           <Dialog.Title>删除目标</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyMedium">
-              确定要删除&ldquo;{goal.title}&rdquo;吗？此操作无法撤销。
-            </Text>
+            <Text variant="bodyMedium">确定要删除&ldquo;{goal.title}&rdquo;吗？此操作无法撤销。</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setShowDeleteConfirm(false)}>取消</Button>
@@ -134,8 +122,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   content: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   textContainer: {
@@ -145,14 +133,14 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   actions: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   input: {
     marginBottom: 12,
   },
   editActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     gap: 12,
   },
 });
