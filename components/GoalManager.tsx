@@ -1,11 +1,11 @@
-import { AddGoalButton } from '@/components/AddGoalButton';
-import { GoalItem } from '@/components/GoalItem';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Goal, GoalType } from '@/types/Goal';
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { GoalStorage } from '@/utils/storage';
+import { GoalItem } from "@/components/GoalItem";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { Goal, GoalType } from "@/types/Goal";
+import { GoalStorage } from "@/utils/storage";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { Appbar } from "react-native-paper";
 
 interface GoalManagerProps {
   type: GoalType;
@@ -19,35 +19,33 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
 
   // 添加一些示例数据用于演示（仅在开发时）
   const addDemoData = async () => {
-    if (goals.length === 0 && type === 'today') {
+    if (goals.length === 0 && type === "today") {
       const demoGoals: Goal[] = [
         {
-          id: 'demo-1',
-          title: '完成重要项目报告',
-          description: '整理Q4季度总结，准备明天的会议',
+          id: "demo-1",
+          title: "完成重要项目报告",
           completed: false,
-          type: 'today',
+          type: "today",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: 'demo-2', 
-          title: '运动30分钟',
-          description: '跑步或瑜伽，保持健康',
+          id: "demo-2",
+          title: "运动30分钟",
           completed: true,
-          type: 'today',
+          type: "today",
           createdAt: new Date(),
           updatedAt: new Date(),
-        }
+        },
       ];
-      
+
       // 先保存到存储，再设置到状态
       try {
         await GoalStorage.saveGoals(type, demoGoals);
         setGoals(demoGoals);
-        console.log('演示数据已保存到存储');
+        console.log("演示数据已保存到存储");
       } catch (error) {
-        console.error('保存演示数据失败:', error);
+        console.error("保存演示数据失败:", error);
         setGoals(demoGoals); // 即使保存失败也显示数据
       }
     }
@@ -63,7 +61,7 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
       setLoading(true);
       const storedGoals = await GoalStorage.loadGoals(type);
       setGoals(storedGoals);
-      
+
       // 如果没有数据，添加演示数据
       if (storedGoals.length === 0) {
         await addDemoData();
@@ -75,29 +73,10 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
     }
   };
 
-  const addGoal = async (goalData: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>) => {
-    try {
-      const newGoal: Goal = {
-        ...goalData,
-        id: Date.now().toString(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      
-      await GoalStorage.addGoal(type, newGoal);
-      setGoals(prev => [...prev, newGoal]);
-    } catch (error) {
-      console.error(`Failed to add ${type} goal:`, error);
-      // 可以在这里添加错误提示
-    }
-  };
-
   const updateGoal = async (updatedGoal: Goal) => {
     try {
       await GoalStorage.updateGoal(type, updatedGoal);
-      setGoals(prev => prev.map(goal =>
-        goal.id === updatedGoal.id ? updatedGoal : goal
-      ));
+      setGoals((prev) => prev.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal)));
     } catch (error) {
       console.error(`Failed to update ${type} goal:`, error);
       // 可以在这里添加错误提示
@@ -107,15 +86,18 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
   const deleteGoal = async (id: string) => {
     try {
       console.log(`正在删除 ${type} 目标:`, id);
-      console.log('当前目标列表:', goals.map(g => ({id: g.id, title: g.title})));
-      
+      console.log(
+        "当前目标列表:",
+        goals.map((g) => ({ id: g.id, title: g.title }))
+      );
+
       // 先从 UI 中移除，提供即时反馈
-      setGoals(prev => prev.filter(goal => goal.id !== id));
-      
+      setGoals((prev) => prev.filter((goal) => goal.id !== id));
+
       // 然后从存储中删除
       await GoalStorage.deleteGoal(type, id);
-      
-      console.log('删除成功');
+
+      console.log("删除成功");
     } catch (error) {
       console.error(`Failed to delete ${type} goal:`, error);
       // 如果存储删除失败，重新加载数据恢复状态
@@ -123,46 +105,35 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
     }
   };
 
-  const completedGoals = goals.filter(goal => goal.completed);
-  const pendingGoals = goals.filter(goal => !goal.completed);
+  const completedGoals = goals.filter((goal) => goal.completed);
+  const pendingGoals = goals.filter((goal) => !goal.completed);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.header}>
-        <ThemedText type="title" style={styles.title}>{title}</ThemedText>
-        {goals.length > 0 && (
-          <ThemedText style={styles.stats}>
-            {completedGoals.length}/{goals.length} 已完成
-          </ThemedText>
-        )}
-      </ThemedView>
+      <Appbar.Header>
+        <Appbar.Content title={title} />
+      </Appbar.Header>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <AddGoalButton type={type} onAdd={addGoal} />
-
-        {loading ? (
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scrollContent, goals.length === 0 && styles.scrollContentEmpty]}
+        showsVerticalScrollIndicator={false}
+      >
+        {goals.length === 0 ? (
           <ThemedView style={styles.emptyContainer}>
-            <ActivityIndicator size="large" />
-            <ThemedText style={styles.emptyText}>加载中...</ThemedText>
-          </ThemedView>
-        ) : goals.length === 0 ? (
-          <ThemedView style={styles.emptyContainer}>
-            <ThemedText style={styles.emptyText}>
-              {emptyMessage || `还没有${title}目标，点击上方按钮添加第一个目标吧！`}
-            </ThemedText>
+            <ThemedText style={styles.emptyText}>{emptyMessage || `暂无${title.replace("目标", "")}目标`}</ThemedText>
           </ThemedView>
         ) : (
           <>
             {pendingGoals.length > 0 && (
               <ThemedView style={styles.section}>
                 <ThemedText style={styles.sectionTitle}>进行中</ThemedText>
-                {pendingGoals.map(goal => (
-                  <GoalItem
-                    key={goal.id}
-                    goal={goal}
-                    onUpdate={updateGoal}
-                    onDelete={deleteGoal}
-                  />
+                {pendingGoals.map((goal) => (
+                  <GoalItem key={goal.id} goal={goal} onUpdate={updateGoal} onDelete={deleteGoal} />
                 ))}
               </ThemedView>
             )}
@@ -170,13 +141,8 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
             {completedGoals.length > 0 && (
               <ThemedView style={styles.section}>
                 <ThemedText style={styles.sectionTitle}>已完成</ThemedText>
-                {completedGoals.map(goal => (
-                  <GoalItem
-                    key={goal.id}
-                    goal={goal}
-                    onUpdate={updateGoal}
-                    onDelete={deleteGoal}
-                  />
+                {completedGoals.map((goal) => (
+                  <GoalItem key={goal.id} goal={goal} onUpdate={updateGoal} onDelete={deleteGoal} />
                 ))}
               </ThemedView>
             )}
@@ -190,6 +156,7 @@ export function GoalManager({ type, title, emptyMessage }: GoalManagerProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
   },
   header: {
     padding: 20,
@@ -198,19 +165,23 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 8,
   },
-  stats: {
-    fontSize: 16,
-    opacity: 0.7,
-  },
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 100,
+  },
+  scrollContentEmpty: {
+    flexGrow: 1,
+  },
   emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     padding: 40,
-    alignItems: 'center',
   },
   emptyText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
     opacity: 0.6,
     lineHeight: 24,
@@ -220,7 +191,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 20,
     marginBottom: 8,
     opacity: 0.8,

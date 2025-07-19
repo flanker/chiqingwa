@@ -1,7 +1,7 @@
 import { Goal } from '@/types/Goal';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, Checkbox, IconButton, Text, Button, TextInput, Portal, Dialog } from 'react-native-paper';
+import { Button, Card, Checkbox, Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
 
 interface GoalItemProps {
   goal: Goal;
@@ -12,7 +12,6 @@ interface GoalItemProps {
 export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(goal.title);
-  const [editDescription, setEditDescription] = useState(goal.description || '');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSave = () => {
@@ -20,7 +19,6 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
       onUpdate({
         ...goal,
         title: editTitle.trim(),
-        description: editDescription.trim() || undefined,
         updatedAt: new Date(),
       });
       setIsEditing(false);
@@ -29,7 +27,6 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
 
   const handleCancel = () => {
     setEditTitle(goal.title);
-    setEditDescription(goal.description || '');
     setIsEditing(false);
   };
 
@@ -59,15 +56,6 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
             value={editTitle}
             onChangeText={setEditTitle}
             mode="outlined"
-            style={styles.input}
-          />
-          <TextInput
-            label="目标描述（可选）"
-            value={editDescription}
-            onChangeText={setEditDescription}
-            mode="outlined"
-            multiline
-            numberOfLines={3}
             style={styles.input}
           />
           <View style={styles.editActions}>
@@ -102,17 +90,6 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
               >
                 {goal.title}
               </Text>
-              {goal.description && (
-                <Text
-                  variant="bodyMedium"
-                  style={[
-                    styles.description,
-                    goal.completed && { opacity: 0.6 }
-                  ]}
-                >
-                  {goal.description}
-                </Text>
-              )}
             </View>
             <View style={styles.actions}>
               <IconButton
@@ -158,17 +135,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 8,
   },
   textContainer: {
     flex: 1,
   },
   title: {
-    marginBottom: 4,
-  },
-  description: {
-    opacity: 0.8,
+    marginBottom: 0,
   },
   actions: {
     flexDirection: 'row',

@@ -11,7 +11,6 @@ interface AddGoalButtonProps {
 export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
 
   const typeLabels = {
     today: '今日',
@@ -24,19 +23,16 @@ export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
     if (title.trim()) {
       onAdd({
         title: title.trim(),
-        description: description.trim() || undefined,
         completed: false,
         type,
       });
       setTitle('');
-      setDescription('');
       setDialogVisible(false);
     }
   };
 
   const handleCancel = () => {
     setTitle('');
-    setDescription('');
     setDialogVisible(false);
   };
 
@@ -44,7 +40,6 @@ export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
     <>
       <FAB
         icon="plus"
-        label={`添加${typeLabels[type]}目标`}
         onPress={() => setDialogVisible(true)}
         style={styles.fab}
         mode="elevated"
@@ -55,21 +50,11 @@ export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
           <Dialog.Title>添加{typeLabels[type]}目标</Dialog.Title>
           <Dialog.Content>
             <TextInput
-              label="目标标题"
               value={title}
               onChangeText={setTitle}
               mode="outlined"
               style={styles.input}
               autoFocus
-            />
-            <TextInput
-              label="目标描述（可选）"
-              value={description}
-              onChangeText={setDescription}
-              mode="outlined"
-              multiline
-              numberOfLines={3}
-              style={styles.input}
             />
           </Dialog.Content>
           <Dialog.Actions>
@@ -90,7 +75,12 @@ export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
 
 const styles = StyleSheet.create({
   fab: {
-    margin: 16,
+    position: 'absolute',
+    bottom: 90,
+    right: 24,
+    zIndex: 9999,
+    elevation: 16,
+    backgroundColor: '#6200ea',
   },
   input: {
     marginBottom: 16,

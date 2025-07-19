@@ -1,68 +1,34 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { GoalManager } from '@/components/GoalManager';
-import { StorageDebug } from '@/components/StorageDebug';
-import { FeatureDemo } from '@/components/FeatureDemo';
-import { ThemedText } from '@/components/ThemedText';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { AddGoalButton } from "@/components/AddGoalButton";
+import { GoalManager } from "@/components/GoalManager";
+import { Goal } from "@/types/Goal";
+import { GoalStorage } from "@/utils/storage";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TodayScreen() {
-  const [showDebug, setShowDebug] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const tintColor = useThemeColor({}, 'tint');
-  const iconColor = useThemeColor({}, 'icon');
+  const handleAddGoal = async (goalData: Omit<Goal, "id" | "createdAt" | "updatedAt">) => {
+    try {
+      const newGoal: Goal = {
+        ...goalData,
+        id: Date.now().toString(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-  if (showDebug) {
-    return (
-      <SafeAreaView style={styles.container} edges={['top']}>
-        <TouchableOpacity 
-          style={[styles.toggleButton, { backgroundColor: tintColor }]} 
-          onPress={() => setShowDebug(false)}
-        >
-          <ThemedText style={[styles.toggleText, { color: tintColor === '#0a7ea4' ? '#fff' : '#000' }]}>返回目标管理</ThemedText>
-        </TouchableOpacity>
-        <StorageDebug />
-      </SafeAreaView>
-    );
-  }
-
-  if (showDemo) {
-    return (
-      <SafeAreaView style={styles.container} edges={['top']}>
-        <TouchableOpacity 
-          style={[styles.toggleButton, { backgroundColor: tintColor }]} 
-          onPress={() => setShowDemo(false)}
-        >
-          <ThemedText style={[styles.toggleText, { color: tintColor === '#0a7ea4' ? '#fff' : '#000' }]}>返回目标管理</ThemedText>
-        </TouchableOpacity>
-        <FeatureDemo />
-      </SafeAreaView>
-    );
-  }
+      await GoalStorage.addGoal("today", newGoal);
+      setRefreshKey((prev) => prev + 1); // 触发 GoalManager 重新加载
+    } catch (error) {
+      console.error("Failed to add today goal:", error);
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={[styles.helpButton, { backgroundColor: iconColor + '20' }]} 
-          onPress={() => setShowDemo(true)}
-        >
-          <ThemedText style={styles.buttonText}>❓</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.debugButton, { backgroundColor: iconColor + '15' }]} 
-          onPress={() => setShowDebug(true)}
-        >
-          <ThemedText style={styles.buttonText}>🔧</ThemedText>
-        </TouchableOpacity>
-      </View>
-      <GoalManager
-        type="today"
-        title="今日目标"
-        emptyMessage="今天还没有设定目标，快来添加一个吧！专注完成今天最重要的事情。"
-      />
+    <SafeAreaView style={styles.container} edges={[]}>
+      <GoalManager key={refreshKey} type="today" title="今日目标" emptyMessage="安排一些今天要完成的重要事项吧！" />
+      <AddGoalButton type="today" onAdd={handleAddGoal} />
     </SafeAreaView>
   );
 }
@@ -70,33 +36,5 @@ export default function TodayScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 20,
-    zIndex: 1000,
-    flexDirection: 'row',
-    gap: 8,
-  },
-  helpButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  debugButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  buttonText: {
-    fontSize: 16,
-  },
-  toggleButton: {
-    padding: 12,
-    margin: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  toggleText: {
-    fontWeight: '600',
   },
 });

@@ -1,60 +1,53 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { TodayIcon, WeekIcon, MonthIcon, YearIcon } from '@/components/icons/GoalIcons';
+import React, { useState } from "react";
+import { BottomNavigation } from "react-native-paper";
+import TodayScreen from "./index";
+import MonthScreen from "./month";
+import WeekScreen from "./week";
+import YearScreen from "./year";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const [index, setIndex] = useState(0);
+
+  const routes = [
+    {
+      key: "today",
+      title: "今日",
+      focusedIcon: "calendar-today",
+      unfocusedIcon: "calendar-outline",
+    },
+    {
+      key: "week",
+      title: "本周",
+      focusedIcon: "calendar-week",
+      unfocusedIcon: "calendar-week-begin",
+    },
+    {
+      key: "month",
+      title: "本月",
+      focusedIcon: "calendar-month",
+      unfocusedIcon: "calendar-month-outline",
+    },
+    {
+      key: "year",
+      title: "今年",
+      focusedIcon: "calendar",
+      unfocusedIcon: "calendar-outline",
+    },
+  ];
+
+  const renderScene = BottomNavigation.SceneMap({
+    today: TodayScreen,
+    week: WeekScreen,
+    month: MonthScreen,
+    year: YearScreen,
+  });
 
   return (
-    <Tabs
-      initialRouteName="index"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: '今日',
-          tabBarIcon: ({ color }) => <TodayIcon size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="week"
-        options={{
-          title: '本周',
-          tabBarIcon: ({ color }) => <WeekIcon size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="month"
-        options={{
-          title: '本月',
-          tabBarIcon: ({ color }) => <MonthIcon size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="year"
-        options={{
-          title: '今年',
-          tabBarIcon: ({ color }) => <YearIcon size={28} color={color} />,
-        }}
-      />
-    </Tabs>
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+      barStyle={{ backgroundColor: "transparent" }}
+    />
   );
 }
