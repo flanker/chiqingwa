@@ -1,0 +1,42 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- 圆角矩形背景 - 绿色 -->
+  <rect width="1024" height="1024" rx="180" ry="180" fill="#22C55E"/>
+
+  <!-- 青蛙吉祥物 (放大1.4倍) -->
+  <g transform="translate(512, 512)">
+    <!-- 青蛙身体 -->
+    <ellipse cx="0" cy="28" rx="196" ry="168" fill="#FFFFFF"/>
+
+    <!-- 青蛙头部 -->
+    <ellipse cx="0" cy="-112" rx="168" ry="140" fill="#FFFFFF"/>
+
+    <!-- 左眼睛 -->
+    <circle cx="-63" cy="-140" r="49" fill="#FFFFFF"/>
+    <circle cx="-63" cy="-140" r="35" fill="#22C55E"/>
+    <circle cx="-59" cy="-147" r="11" fill="#FFFFFF"/>
+
+    <!-- 右眼睛 -->
+    <circle cx="63" cy="-140" r="49" fill="#FFFFFF"/>
+    <circle cx="63" cy="-140" r="35" fill="#22C55E"/>
+    <circle cx="67" cy="-147" r="11" fill="#FFFFFF"/>
+
+    <!-- 微笑嘴巴 -->
+    <path d="M -35 -63 Q 0 -35 35 -63" stroke="#22C55E" stroke-width="11" fill="none" stroke-linecap="round"/>
+
+    <!-- 左前腿 -->
+    <ellipse cx="-112" cy="84" rx="35" ry="56" fill="#FFFFFF"/>
+
+    <!-- 右前腿 -->
+    <ellipse cx="112" cy="84" rx="35" ry="56" fill="#FFFFFF"/>
+
+    <!-- 左后腿 -->
+    <ellipse cx="-140" cy="140" rx="49" ry="42" fill="#FFFFFF"/>
+
+    <!-- 右后腿 -->
+    <ellipse cx="140" cy="140" rx="49" ry="42" fill="#FFFFFF"/>
+
+    <!-- 鼻孔 -->
+    <ellipse cx="-11" cy="-91" rx="4" ry="3" fill="#22C55E"/>
+    <ellipse cx="11" cy="-91" rx="4" ry="3" fill="#22C55E"/>
+  </g>
+</svg>

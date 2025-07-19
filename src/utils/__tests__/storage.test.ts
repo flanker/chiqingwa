@@ -1,5 +1,5 @@
-import { GoalStorage } from '../storage';
 import { Goal } from '@/types/Goal';
+import { GoalStorage } from '../storage';
 
 // 模拟 AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -47,9 +47,9 @@ describe('GoalStorage', () => {
   describe('saveGoals', () => {
     it('should stringify and save goals', async () => {
       const AsyncStorage = require('@react-native-async-storage/async-storage');
-      
+
       await GoalStorage.saveGoals('today', [mockGoal]);
-      
+
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         'goals_today',
         JSON.stringify([mockGoal])
@@ -61,9 +61,9 @@ describe('GoalStorage', () => {
     it('should add goal to existing goals and save', async () => {
       const AsyncStorage = require('@react-native-async-storage/async-storage');
       AsyncStorage.getItem.mockResolvedValue(JSON.stringify([]));
-      
+
       await GoalStorage.addGoal('today', mockGoal);
-      
+
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         'goals_today',
         JSON.stringify([mockGoal])

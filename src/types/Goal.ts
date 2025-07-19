@@ -4,7 +4,7 @@ export interface Goal {
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
-  type: 'today' | 'week' | 'month' | 'year';
+  type: "today" | "week" | "month" | "year";
 }
 
-export type GoalType = Goal['type'];
+export type GoalType = Goal["type"];

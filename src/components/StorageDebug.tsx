@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { GoalStorage } from '@/utils/storage';
 import { Goal } from '@/types/Goal';
+import { GoalStorage } from '@/utils/storage';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 
 export function StorageDebug() {
   const [stats, setStats] = useState<any>(null);
@@ -19,7 +19,7 @@ export function StorageDebug() {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      
+
       await GoalStorage.addGoal('today', testGoal);
       Alert.alert('成功', '测试目标已添加');
       await updateStats();
@@ -76,7 +76,7 @@ export function StorageDebug() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>存储调试工具</ThemedText>
-      
+
       {stats && (
         <ThemedView style={styles.statsContainer}>
           <ThemedText style={styles.statsTitle}>存储统计:</ThemedText>

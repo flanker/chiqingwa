@@ -1,11 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Goal, GoalType } from '@/types/Goal';
+import { Goal, GoalType } from "@/types/Goal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const STORAGE_KEYS = {
-  TODAY_GOALS: 'goals_today',
-  WEEK_GOALS: 'goals_week',
-  MONTH_GOALS: 'goals_month',
-  YEAR_GOALS: 'goals_year',
+  TODAY_GOALS: "goals_today",
+  WEEK_GOALS: "goals_week",
+  MONTH_GOALS: "goals_month",
+  YEAR_GOALS: "goals_year",
 } as const;
 
 export class GoalStorage {
@@ -26,15 +26,15 @@ export class GoalStorage {
     try {
       const key = this.getStorageKey(type);
       const data = await AsyncStorage.getItem(key);
-      
+
       if (!data) {
         return [];
       }
 
       const goals: Goal[] = JSON.parse(data);
-      
+
       // 将日期字符串转换回 Date 对象
-      return goals.map(goal => ({
+      return goals.map((goal) => ({
         ...goal,
         createdAt: new Date(goal.createdAt),
         updatedAt: new Date(goal.updatedAt),
@@ -73,8 +73,8 @@ export class GoalStorage {
    */
   static async updateGoal(type: GoalType, updatedGoal: Goal): Promise<void> {
     const goals = await this.loadGoals(type);
-    const index = goals.findIndex(goal => goal.id === updatedGoal.id);
-    
+    const index = goals.findIndex((goal) => goal.id === updatedGoal.id);
+
     if (index !== -1) {
       goals[index] = updatedGoal;
       await this.saveGoals(type, goals);
@@ -88,7 +88,7 @@ export class GoalStorage {
    */
   static async deleteGoal(type: GoalType, goalId: string): Promise<void> {
     const goals = await this.loadGoals(type);
-    const filteredGoals = goals.filter(goal => goal.id !== goalId);
+    const filteredGoals = goals.filter((goal) => goal.id !== goalId);
     await this.saveGoals(type, filteredGoals);
   }
 
@@ -113,8 +113,8 @@ export class GoalStorage {
       const keys = Object.values(STORAGE_KEYS);
       await AsyncStorage.multiRemove(keys);
     } catch (error) {
-      console.error('Error clearing all goals:', error);
-      throw new Error('Failed to clear all goals');
+      console.error("Error clearing all goals:", error);
+      throw new Error("Failed to clear all goals");
     }
   }
 
@@ -130,10 +130,10 @@ export class GoalStorage {
   }> {
     try {
       const [todayGoals, weekGoals, monthGoals, yearGoals] = await Promise.all([
-        this.loadGoals('today'),
-        this.loadGoals('week'),
-        this.loadGoals('month'),
-        this.loadGoals('year'),
+        this.loadGoals("today"),
+        this.loadGoals("week"),
+        this.loadGoals("month"),
+        this.loadGoals("year"),
       ]);
 
       const stats = {
@@ -146,7 +146,7 @@ export class GoalStorage {
 
       return stats;
     } catch (error) {
-      console.error('Error getting storage stats:', error);
+      console.error("Error getting storage stats:", error);
       return { today: 0, week: 0, month: 0, year: 0, total: 0 };
     }
   }

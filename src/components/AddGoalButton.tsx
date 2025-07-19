@@ -1,7 +1,7 @@
 import { Goal, GoalType } from '@/types/Goal';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Button, Dialog, Portal, TextInput, FAB } from 'react-native-paper';
+import { Button, Dialog, FAB, Portal, TextInput } from 'react-native-paper';
 
 interface AddGoalButtonProps {
   type: GoalType;
@@ -59,8 +59,8 @@ export function AddGoalButton({ type, onAdd }: AddGoalButtonProps) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={handleCancel}>取消</Button>
-            <Button 
-              mode="contained" 
+            <Button
+              mode="contained"
               onPress={handleAdd}
               disabled={!title.trim()}
             >
