@@ -57,6 +57,10 @@ export function GoalItem({ goal, onUpdate, onDelete }: GoalItemProps) {
             onChangeText={setEditTitle}
             mode="outlined"
             style={styles.input}
+            enablesReturnKeyAutomatically={false}
+            returnKeyType="done"
+            multiline={false}
+            onSubmitEditing={handleSave}
           />
           <View style={styles.editActions}>
             <Button mode="contained" onPress={handleSave} disabled={!editTitle.trim()}>
