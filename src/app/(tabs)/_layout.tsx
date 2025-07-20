@@ -13,25 +13,25 @@ export default function TabLayout() {
       key: "today",
       title: "今日",
       focusedIcon: "calendar-today",
-      unfocusedIcon: "calendar-outline",
+      unfocusedIcon: "calendar-today",
     },
     {
       key: "week",
       title: "本周",
-      focusedIcon: "calendar-week",
-      unfocusedIcon: "calendar-week-begin",
+      focusedIcon: "calendar-range",
+      unfocusedIcon: "calendar-range",
     },
     {
       key: "month",
       title: "本月",
       focusedIcon: "calendar-month",
-      unfocusedIcon: "calendar-month-outline",
+      unfocusedIcon: "calendar-month",
     },
     {
       key: "year",
       title: "今年",
-      focusedIcon: "calendar",
-      unfocusedIcon: "calendar-outline",
+      focusedIcon: "calendar-blank",
+      unfocusedIcon: "calendar-blank",
     },
   ];
 
