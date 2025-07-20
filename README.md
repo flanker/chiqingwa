@@ -1,50 +1,95 @@
-# Welcome to your Expo app 👋
+# 吃青蛙 🐸
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+一个专注于分层目标管理和执行的个人目标管理应用。核心功能是多层级目标查看：日目标、周目标、月目标和年目标。这是一个系统性工具，帮助用户实现从"年度大目标"到"每日小行动"的完整循环。
 
-## Get started
+## 应用理念
 
-1. Install dependencies
+- **目标层次结构**：年 → 月 → 周 → 日的目标分解
+- **核心关注点**：将长期目标系统性地分解为可执行的日常任务
+- **设计哲学**：遵循"吃青蛙"方法 - 优先处理重要任务
+
+这是一个使用 Expo Router 构建的 React Native 移动应用，支持 iOS、Android 和 Web 平台。应用使用 TypeScript 开发，遵循现代 React Native 开发模式，基于 Expo SDK 53。
+
+## 开始使用
+
+1. 安装依赖
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. 启动应用
 
    ```bash
+   npm start
+   # 或者
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+启动后，你可以选择在以下平台打开应用：
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [开发构建](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android 模拟器](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS 模拟器](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go) - 用于体验 Expo 应用开发的有限沙盒环境
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 开发命令
 
-## Get a fresh project
+- `npm start` 或 `npx expo start` - 启动开发服务器
+- `npm run android` - 在 Android 模拟器上启动
+- `npm run ios` - 在 iOS 模拟器上启动
+- `npm run web` - 启动 Web 版本
+- `npm run lint` - 运行 ESLint 代码质量检查
+- `npm run reset-project` - 重置为空白应用（移除启动代码）
 
-When you're ready, run:
+## 技术架构
 
-```bash
-npm run reset-project
+### 基于文件的路由 (Expo Router)
+- 使用 Expo Router v5 的文件路由系统
+- 主要导航结构位于 `app/` 目录
+- 支持嵌套路由和动态路由
+
+### 主要技术栈
+- **Expo SDK 53** - 启用新架构
+- **React 19** 和 **React Native 0.79.5**
+- **TypeScript** - 严格模式和路径别名 (`@/*`)
+- **React Navigation** - 带触觉反馈的导航
+- **React Native Paper** - Material Design UI 组件库
+- **React Native Reanimated** - 动画支持
+- **Expo Router** - 基于文件的路由和类型化路由
+
+### 主题系统
+- 支持亮色/暗色主题自动切换
+- 主题感知组件自动适配颜色方案
+- 跨平台设计一致性
+
+## 项目结构
+
+```
+app/                    # 路由目录
+├── (tabs)/            # 标签页导航组
+├── _layout.tsx        # 根布局
+└── +not-found.tsx     # 404 页面
+
+components/            # 组件目录
+├── ui/               # UI 组件
+└── themed/           # 主题组件
+
+constants/            # 常量配置
+hooks/               # 自定义 Hooks
+assets/              # 静态资源
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 了解更多
 
-## Learn more
+要了解更多关于使用 Expo 开发项目的信息，请查看以下资源：
 
-To learn more about developing your project with Expo, look at the following resources:
+- [Expo 文档](https://docs.expo.dev/)：学习基础知识或深入了解高级主题
+- [Expo 教程](https://docs.expo.dev/tutorial/introduction/)：跟随分步教程创建在 Android、iOS 和 Web 上运行的项目
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 加入社区
 
-## Join the community
+加入我们的开发者社区，一起构建通用应用：
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo GitHub](https://github.com/expo/expo)：查看开源平台并贡献代码
+- [Discord 社区](https://chat.expo.dev)：与 Expo 用户交流并提问
